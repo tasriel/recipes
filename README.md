@@ -1,6 +1,6 @@
 # Rezepte
 
-Rezeptsammlung im [Cooklang](https://cooklang.org)-Format: jedes Rezept ist eine `.cook`-Textdatei, Bilder mit gleichem Dateinamen liegen daneben.
+Rezeptsammlung im [Cooklang](https://cooklang.org)-Format: jedes Rezept ist eine `.cook`-Textdatei im Ordner [`recipes/`](recipes/), Bilder mit gleichem Dateinamen liegen daneben.
 
 Live: **[cook.icken.eu](https://cook.icken.eu)**
 
@@ -11,7 +11,7 @@ main  ──push──►  GitHub Action  ──►  deploy  ──Webhook──
 (.cook-Dateien)  cook build web      (fertige statische Seite)
 ```
 
-- **`main`** ist die Quelle: Hier werden Rezepte angelegt und bearbeitet.
+- **`main`** ist die Quelle: Hier werden Rezepte unter `recipes/` angelegt und bearbeitet.
 - **GitHub Action** ([`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)): baut bei jedem Push auf `main` mit [CookCLI](https://github.com/cooklang/cookcli) (`cook build web`) eine statische Seite und pusht sie in den Branch `deploy`.
 - **`deploy`** wird automatisch erzeugt und enthält nur die gebaute Seite. Nicht von Hand bearbeiten.
 - **Plesk** holt den `deploy`-Branch per Webhook ab und stellt ihn unter `cook.icken.eu` bereit.
@@ -28,7 +28,7 @@ cook server .
 # → http://localhost:9080
 
 # Statische Seite wie im Deploy bauen und ansehen
-cook build web _site --lang de-DE
+cook build web _site --base-path recipes --lang de-DE
 python3 -m http.server 8000 --directory _site
 ```
 
