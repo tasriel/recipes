@@ -1,0 +1,41 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+env:
+  COOKCLI_VERSION: v0.38.1
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install CookCLI
+        run: |
+          curl -fsSL "https://github.com/cooklang/cookcli/releases/download/${COOKCLI_VERSION}/cook-x86_64-unknown-linux-gnu.tar.gz" | tar xz -C "$RUNNER_TEMP"
+          sudo install -m 755 "$RUNNER_TEMP/cook" /usr/local/bin/cook
+          cook --version
+
+      - name: Build static site
+        run: cook build web _site --lang de-DE
+
+      - name: Push site to deploy branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: deploy
+          publish_dir: ./_site
+          force_orphan: true
+          commit_message: "Deploy ${{ github.sha }}"
