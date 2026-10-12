@@ -24,7 +24,7 @@ Voraussetzung: [CookCLI](https://cooklang.org/cli/) ist installiert.
 
 ```bash
 # Web-Oberfläche mit allen Funktionen (Einkaufsliste, Skalierung, Editor)
-cook server .
+cook server recipes
 # → http://localhost:9080
 
 # Statische Seite wie im Deploy bauen und ansehen
