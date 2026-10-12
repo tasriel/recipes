@@ -13,6 +13,7 @@ main  ──push──►  GitHub Action  ──►  deploy  ──Webhook──
 
 - **`main`** ist die Quelle: Hier werden Rezepte unter `recipes/` angelegt und bearbeitet.
 - **GitHub Action** ([`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)): baut bei jedem Push auf `main` mit [CookCLI](https://github.com/cooklang/cookcli) (`cook build web`) eine statische Seite und pusht sie in den Branch `deploy`.
+- **Rechtliches:** Nach dem Build fügt [`scripts/add-legal-links.sh`](scripts/add-legal-links.sh) in den Footer jeder Seite Links zu Impressum und Datenschutz ein. Beide liegen zentral auf `start.icken.eu`. Der Schritt bricht den Deploy ab, wenn eine Seite keinen Footer hat.
 - **`deploy`** wird automatisch erzeugt und enthält nur die gebaute Seite. Nicht von Hand bearbeiten.
 - **Plesk** holt den `deploy`-Branch per Webhook ab und stellt ihn unter `cook.icken.eu` bereit.
 
@@ -36,3 +37,8 @@ python3 -m http.server 8000 --directory _site
 
 - [Cooklang](https://cooklang.org) – Projektseite und [Syntax](https://cooklang.org/docs/spec/)
 - [CookCLI](https://github.com/cooklang/cookcli) – Kommandozeilen-Tool für Server und Build
+
+## Datenschutz
+
+- Die gebaute Seite lädt keine externen Ressourcen und setzt keine Cookies. Im `localStorage` liegen nur die Darstellung (`theme`) und Timer-Stände (`cook.timers.…`).
+- Impressum und Datenschutzerklärung stehen auf `https://start.icken.eu/impressum.html` und `.../datenschutz.html`.
